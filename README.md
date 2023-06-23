@@ -1,2 +1,5 @@
+### Selamat Datang!
 # final-project
-Repository final project for data structure subject
+
+Ini merupakan *repository khusus* untuk **Final Project**
+Mata Kuliah : **Struktur Data**
