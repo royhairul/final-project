@@ -94,26 +94,28 @@ public class PriorityTask {
     }
 
     public Task removeByName(String inputNama) {
-        if (isEmpty()) {
-            return null;
+        Node currNode = front;
+        Node prevNode = null;
+
+        // Jika merupakan front
+        if(currNode != null && currNode.dataTugas.namaTugas.equalsIgnoreCase(inputNama)) {
+            front = currNode.next;
+            return currNode.dataTugas;
         }
 
-        else {
-            Node currNode = front;
-            Node delNode = null;
-
-            while(currNode != null) {
-                if(currNode.next.dataTugas.namaTugas.equalsIgnoreCase(inputNama)) {
-                    delNode = currNode.next;
-                    currNode.next = delNode.next;
-                }
-
-                currNode = currNode.next;
-            }
-
-            assert delNode != null;
-            return delNode.dataTugas;
+        // Mencari Node
+        while(currNode != null && !currNode.next.dataTugas.namaTugas.equalsIgnoreCase(inputNama)) {
+            prevNode = currNode;
+            currNode = currNode.next;
         }
+
+        // Jika Ditemukan
+        if (currNode != null) {
+            prevNode.next = currNode.next;
+            return currNode.dataTugas;
+        }
+
+        return null;
     }
 
     public Task peek() {

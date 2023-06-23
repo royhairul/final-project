@@ -3,6 +3,8 @@ package com.finalProject;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+import static com.finalProject.DatabaseSystem.*;
+
 public class UserMenuHandling {
 
     public static void addTaskFromUser(Scanner input, ListTask lT, PriorityTask lTP) {
@@ -24,7 +26,7 @@ public class UserMenuHandling {
                 if (inputTanggal.compareTo(tglHariIni) > 0) {
                     isValid = true;
                 } else {
-                    System.out.println("Tanggal Yang Anda Masukkan Tidak Valid");
+                    System.out.println(" (x) Tanggal Yang Anda Masukkan Tidak Valid");
                 }
 
             }
@@ -33,6 +35,9 @@ public class UserMenuHandling {
 
             lT.addTask(tugasBaru);
             lTP.enqueue(tugasBaru);
+
+            // Pada Database
+            saveToDB(tugasBaru);
 
             System.out.print(" Tambah Tugas Lagi (Y/n) ? ");
         } while(input.next().equalsIgnoreCase("Y"));
@@ -44,6 +49,9 @@ public class UserMenuHandling {
 
         lT.removeTask(inputNamaTugas);
         Task tugasDihapus = lTP.removeByName(inputNamaTugas);
+
+        // Pada Database
+        removefromDB(inputNamaTugas);
 
         if(tugasDihapus != null) {
             System.out.println(" (-) Tugas " + inputNamaTugas + " telah dihapus");
@@ -65,12 +73,12 @@ public class UserMenuHandling {
             case 1 -> {
                 System.out.print(" Masukkan Nama Tugas : ");
                 String inputNamaTugas = input.next();
-                lT.cariTugasByNama(inputNamaTugas);
+                searchFromDBByName(inputNamaTugas);
             }
             case 2 -> {
                 System.out.print(" Masukkan Mata Kuliah : ");
                 String inputMatKul = input.next();
-                lT.cariTugasByMatKul(inputMatKul);
+                searchFromDBByMatkul(inputMatKul);
             }
             default -> System.out.println(" Pilihan Anda tidak valid.");
         }
@@ -132,7 +140,7 @@ public class UserMenuHandling {
         switch (inputTampilan) {
             case 1 -> {
                 System.out.println(" Berikut Daftar yang telah anda masukkan : ");
-                lT.printListTugas();
+                printFromDB();
             }
             case 2 -> {
                 System.out.println(" Berikut Daftar Tugas Prioritas : ");
